@@ -2,9 +2,15 @@ FROM ruby:2.2-alpine
 
 ENV CF_CLI_VERSION "6.26.0"
 
-ENV SPRUCE_VERSION 1.8.9
+ENV SPRUCE_VERSION "1.8.9"
 
-ENV spiff_version="1.0.7"
+ENV spiff_version "1.0.7"
+
+ENV PACKAGES "curl openssl ca-certificates wget"
+
+RUN apk add --update $PACKAGES && rm -rf /var/cache/apk/*
+
+RUN apk add --update bash openssl openssh-client file git && rm -rf /var/cache/apk/*
 
 RUN gem install bosh_cli -v 1.3232.0 --no-rdoc --no-ri
 
@@ -24,4 +30,3 @@ RUN wget -O /tmp/spiff_linux_amd64.zip "https://github.com/cloudfoundry-incubato
     chmod 755 /usr/local/bin/spiff && \
     rm /tmp/spiff_linux_amd64.zip
 
-RUN apk add --update bash openssl openssh-client file git && rm -rf /var/cache/apk/*
